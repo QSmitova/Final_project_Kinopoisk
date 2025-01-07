@@ -58,5 +58,7 @@ class MoviePage:
 
     @allure.step("Переход на страницу онлайн-кинотеатра")
     def online_cinema(self):
-        self.__driver.find_element(By.CSS_SELECTOR, '[src="https://avatars.mds.yandex.net/get-bunker/50064/15d30528c2394db32f9624a0fa4ff244f79d8c7c/orig"]').click()
+        self.__driver.find_element(By.CSS_SELECTOR, '[src="https://avatars.mds.yandex.net/get-bunker/'
+                                                    '50064/15d30528c2394db32f9624a0fa4ff244f79d8c7c/orig"]').click()
+    #написать проверку, наверное, что полученный url = https://hd.kinopoisk.ru/
 
