@@ -1,22 +1,23 @@
 from time import sleep
 import allure
-from page.AuthPage import AuthPage
-from page.MoviePage import MoviePage
+from sqlalchemy import except_
+
+from page.auth_page import AuthPage
+from page.movie_page import MoviePage
 
 
 @allure.title("Тест на проверку авторизации")
 @allure.severity("critical")
-def test_auth(browser, test_data:dict):
+def test_auth(auth_ui_page, movie_ui_page, test_data:dict):
     email = test_data.get("email")
     password = test_data.get("password")
 
-    auth_page = AuthPage(browser)
-    auth_page.go()
-    auth_page.login_as(email, password)
-    #какой assert сделать на проверку авторизации?
+    auth_ui_page.open()
+    auth_ui_page.login_as(email, password)
 
-    #избегать авторизации в начале каждого теста. Для этого на странице сайта нужно подложить в куки токен авторизации
-    #как это сделать?
+    assert movie_ui_page.get_online_cinema_button()
+    assert not auth_ui_page.enter_button_exist()
+
 
 @allure.title("Тест на поиск фильма по названию")
 @allure.severity("critical")
@@ -63,7 +64,7 @@ def test_online_cinema(browser):
     auth_page = AuthPage(browser)
     auth_page.go()
     movie_page = MoviePage(browser)
-    movie_page.online_cinema()
+    movie_page.get_online_cinema_button.click()
 
 sleep(15)
 
