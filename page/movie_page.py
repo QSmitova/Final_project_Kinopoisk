@@ -15,19 +15,14 @@ from page.base_page import BasePage
 class MoviePage(BasePage):
     @allure.step("Поиск фильма по названию в строке поиска")
     def find_by_title(self, title: str):
-        self._driver.find_element(By.CSS_SELECTOR, '[aria-label="Фильмы, сериалы, персоны"]').click()
         search_input = self._driver.find_element(By.CSS_SELECTOR, '[aria-label="Фильмы, сериалы, персоны"]')
+        search_input.click()
         search_input.send_keys(title)
         search_input.send_keys(Keys.RETURN)
-    #здесь нужно написать проверку, вернуть список найденных фильмов по названию, если не найдены, вывести сообщение, что результатов нет
 
-    @allure.step("Поиск Топ-250 фильмы")
-    def find_by_top_movie(self):
-        self._driver.find_element(By.XPATH, "/html[1]/body[1]/div[1]/div[1]/div[1]/header[1]/div[2]/div[2]/"
-                                             "div[2]/div[1]/form[1]/div[1]/div[1]/a[1]/*[name()='svg'][1]").click()
-        self._driver.find_element(By.XPATH, "/html[1]/body[1]/main[1]/div[4]/div[1]/table[1]/tbody[1]/tr[1]/"
-                                             "td[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/ul[1]/li[1]/a[1]").click()
-    #здесь нужно написать проверку, открывается список или url нужный, или еще как
+    @allure.step("Открытие страницы расширенного поиска")
+    def open_extended_search(self):
+        self._driver.find_element(By.CSS_SELECTOR, '[aria-label="Расширенный поиск"]').click()
 
     @allure.step("Поиск фильма по году выпуска")
     def find_by_year(self, year:int):
@@ -58,9 +53,26 @@ class MoviePage(BasePage):
             '[src="https://avatars.mds.yandex.net/get-bunker/50064/15d30528c2394db32f9624a0fa4ff244f79d8c7c/orig"]'
         )
 
+    @allure.step("Проверка существования кнопки Онлайн-кинотеатра")
     def online_cinema_button_exist(self) -> bool:
         try:
             self.get_online_cinema_button()
             return True
         except NoSuchElementException:
             return False
+
+    @allure.step("Поиск кнопки 'Войти' на главной странице")
+    def find_enter_button(self) -> WebElement:
+        return self._driver.find_element(By.CLASS_NAME, "styles_loginButton__LWZQp")
+
+    @allure.step("Проверка существования кнопки 'Войти'")
+    def enter_button_exist(self) -> bool:
+        try:
+            self.find_enter_button()
+            return True
+        except NoSuchElementException:
+            return False
+
+    @allure.step("Открытие страницы авторизации")
+    def open_auth_page(self) -> None:
+        self.find_enter_button().click()
