@@ -1,6 +1,6 @@
 # Final_project_Kinopoisk
 
-## Шаблон для автоматизации тестирования на python
+## Диплом по автоматизированнуиу тестированию сервиса Кинопоиск
 
 ### Шаги
 1. Склонировать проект 'git clone https://github.com/QSmitova/Final_project_Kinopoisk.git'
@@ -16,12 +16,15 @@
 - allure
 - configparser
 - json
+- quote
+- os
+- pathlib
 
 ### Струткура:
 - ./test - тесты
-- ./pages - описание страниц
+- ./test_data - вводные данные (токен, логин, пароль)
+- ./ui_pages - описание страниц
 - ./api - хелперы для работы с API
-- ./db - хелперы для работы с БД
 
 ### Полезные ссылки
 - [Подсказка по markdown](https://www.markdownguide.org/basic-syntax/)

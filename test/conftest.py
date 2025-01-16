@@ -1,28 +1,25 @@
 import pytest
 import allure
-
 from fake_useragent import UserAgent
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium_stealth import stealth
-
 from ui_pages.auth_page import AuthPage
 from ui_pages.main_page import MainPage
 from ui_pages.extended_search_page import ExtendedSearchPage
 from api.movie_api import MovieApi
 from ui_pages.search_result_page import SearchResultPage
 from ui_pages.top_250_page import Top250Page
-
 from test_data.data_provider import DataProvider
+
+"""
+    Функция для создания объекта WebDriver с настройками браузера,
+    позволяющими снизить вероятность обнаружение автоматизированного ПО
+    """
 
 
 def create_driver() -> WebDriver:
-    """
-        Функция для создания объекта WebDriver с настройками бразуера,
-        позволяющими снизить вероятность обнаружение автоматизированного ПО
-    """
 
     options = Options()
     options.add_argument("start-maximized")
@@ -72,43 +69,57 @@ def browser() -> WebDriver:
         browser.quit()
 
 
+"""Фикстура создания объекта для получения данных"""
+
+
 @pytest.fixture(scope="session")
 def test_data() -> DataProvider:
-    """Фикстура создания объекта для получения данных"""
     return DataProvider()
+
+
+"""Фикстура для получения класса для взаимодействия с API"""
 
 
 @pytest.fixture(scope="module")
 def movie_api(test_data: DataProvider) -> MovieApi:
-    """Фикстура для получения класса для взаимодействия с API"""
     return MovieApi(test_data.get_api_token())
+
+
+"""Фикстура для получения страницы авторизации"""
 
 
 @pytest.fixture(scope="module")
 def auth_ui_page(browser) -> AuthPage:
-    """Фикстура для получения страницы авторизации"""
     return AuthPage(browser)
+
+
+"""Фикстура для получения главной страницы"""
 
 
 @pytest.fixture(scope="module")
 def main_ui_page(browser) -> MainPage:
-    """Фикстура для получения главной страницы"""
     return MainPage(browser)
+
+
+"""Фикстура для получения страницы поиска"""
 
 
 @pytest.fixture(scope="module")
 def search_ui_page(browser) -> SearchResultPage:
-    """Фикстура для получения страницы поиска"""
     return SearchResultPage(browser)
+
+
+"""Фикстура для получения страницы расширенного поиска"""
 
 
 @pytest.fixture(scope="module")
 def extended_search_ui_page(browser) -> ExtendedSearchPage:
-    """Фикстура для получения страницы расширенного поиска"""
     return ExtendedSearchPage(browser)
+
+
+"""Фикстура для получения страницы топ 250"""
 
 
 @pytest.fixture(scope="module")
 def top_250_ui_page(browser) -> Top250Page:
-    """Фикстура для получения страницы топ 250"""
     return Top250Page(browser)

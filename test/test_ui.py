@@ -1,9 +1,12 @@
 import allure
-
+import pytest
 from ui_pages import AuthPage, MainPage, SearchResultPage, ExtendedSearchPage, Top250Page
 
 
-@allure.title("Тест на проверку авторизации")
+@pytest.mark.ui_test
+@allure.title("Авторизация")
+@allure.description("Тест на проверку авторизации")
+@allure.feature("Auth")
 @allure.severity("critical")
 def test_auth(main_ui_page: MainPage, auth_ui_page: AuthPage, test_data: dict):
     main_ui_page.open()
@@ -22,19 +25,26 @@ def test_auth(main_ui_page: MainPage, auth_ui_page: AuthPage, test_data: dict):
         auth_ui_page.save_cookies()
 
 
-@allure.title("Тест на поиск фильма по названию")
+@pytest.mark.ui_test
+@allure.title("Поиск фильма")
+@allure.description("Тест на поиск фильма по названию")
+@allure.feature("Title")
 @allure.severity("critical")
 def test_find_movie_by_title(main_ui_page: MainPage, search_ui_page: SearchResultPage):
     main_ui_page.open()
 
     main_ui_page.find_by_title("Чебурашка")
-    assert search_ui_page.result_card_exist()  # карточка с результатом поиска существует
-
+    with allure.step("Проверка, что карточка с результатом поиска существует"):
+        assert search_ui_page.result_card_exist()
     main_ui_page.find_by_title("тмьдмт")
-    assert not search_ui_page.result_card_exist()  # не существует карточки с результатом поиска
+    with allure.step("Проверка, что карточка с результатом поиска не существует"):
+        assert not search_ui_page.result_card_exist()
 
 
-@allure.title("Тест на поиск коллекции ТОП-250 фильмов")
+@pytest.mark.ui_test
+@allure.title("Поиск коллекции фильмов")
+@allure.description("Тест на поиск коллекции ТОП-250 фильмов")
+@allure.feature("ТОП-250")
 @allure.severity("major")
 def test_find_top_250_movie(
     main_ui_page: MainPage,
@@ -45,11 +55,16 @@ def test_find_top_250_movie(
     main_ui_page.open_extended_search()
 
     extended_search_ui_page.open_top_250_page()
-    assert top_250_ui_page.page_title_exists()
-    allure.step("Проверка соответствия текста заголовка страницы топ 250")
-    assert top_250_ui_page.get_page_title_text() == "250 лучших фильмов"
+    with allure.step("Проверка открытия страницы с заголовком топ 250"):
+        assert top_250_ui_page.page_title_exists()
+    with allure.step("Проверка соответствия текста заголовка страницы топ 250"):
+        assert top_250_ui_page.get_page_title_text() == "250 лучших фильмов"
 
-@allure.title("Тест на поиск коллекции ТОП-250 сериалов")
+
+@pytest.mark.ui_test
+@allure.title("Поиск коллекции сериалов")
+@allure.description("Тест на поиск коллекции ТОП-250 сериалов")
+@allure.feature("ТОП-250")
 @allure.severity("major")
 def test_find_top_250_series(
     main_ui_page: MainPage,
@@ -61,33 +76,40 @@ def test_find_top_250_series(
 
     extended_search_ui_page.open_top_250_page()
     top_250_ui_page.open_series()
-    assert top_250_ui_page.page_title_exists()
-    allure.step("Проверка соответствия текста заголовка страницы топ 250")
-    assert top_250_ui_page.get_page_title_text() == "250 лучших сериалов"
+    with allure.step("Проверка открытия страницы с заголовком топ 250"):
+        assert top_250_ui_page.page_title_exists()
+    with allure.step("Проверка соответствия текста заголовка страницы топ 250"):
+        assert top_250_ui_page.get_page_title_text() == "250 лучших сериалов"
 
 
-@allure.title("Переход на страницу онлайн-кинотеатра")
+@pytest.mark.ui_test
+@allure.title("Онлайн-кинотеатр")
+@allure.description("Тест на переход в онлайн-кинотеатр")
+@allure.feature("Online-cinema")
 @allure.severity("critical")
 def test_online_cinema(main_ui_page: MainPage):
     main_ui_page.open()
     main_ui_page.open_online_cinema_page()
-    assert main_ui_page.get_current_url().startswith("https://hd.kinopoisk.ru/")
+    with allure.step("Проверка открытия страницы, url которой начинается https://hd.kinopoisk.ru/"):
+        assert main_ui_page.get_current_url().startswith("https://hd.kinopoisk.ru/")
 
 
-@allure.title("Тест на поиск по году выпуска")
+@pytest.mark.ui_test
+@allure.title("Писк фильма")
+@allure.description("Тест на поиск по году выпуска")
+@allure.feature("Year")
 @allure.severity("major")
 def test_find_by_year(
     main_ui_page: MainPage,
     extended_search_ui_page: ExtendedSearchPage,
-    search_ui_page:SearchResultPage
+    search_ui_page: SearchResultPage
 ):
     main_ui_page.open()
     main_ui_page.open_extended_search()
     extended_search_ui_page.find_movies_by_year(2020)
-    assert search_ui_page.result_card_exist()
+    with allure.step("Проверка, что карточка с результатом поиска существует"):
+        assert search_ui_page.result_card_exist()
     main_ui_page.open_extended_search()
     extended_search_ui_page.find_movies_by_year(1841)
-    assert not search_ui_page.result_card_exist()
-
-
-
+    with allure.step("Проверка, что карточка с результатом поиска не существует"):
+        assert not search_ui_page.result_card_exist()

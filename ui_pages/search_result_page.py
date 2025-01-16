@@ -1,8 +1,9 @@
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-
 from ui_pages.base_page import BaseKinopoiskPage
+
+""" Класс, описывающий страницу результата поиска """
 
 
 class SearchResultPage(BaseKinopoiskPage):

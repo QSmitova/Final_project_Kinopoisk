@@ -1,14 +1,12 @@
-from asyncio import timeout
-
 import allure
-
-
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+""" Базовый класс """
 
 
 class BasePage:
@@ -18,15 +16,18 @@ class BasePage:
         self._driver = driver
 
     def open(self):
-        allure.step(f"Открытие страницы: {self.url}")
-        self._driver.get(self.url)
+        with allure.step(f"Открытие страницы: {self.url}"):
+            self._driver.get(self.url)
 
+    @allure.step("Обновление страницы")
     def refresh(self):
         self._driver.refresh()
 
+    @allure.step("Получение url текущей страницы")
     def get_current_url(self) -> str:
         return self._driver.current_url
 
+    @allure.step("Поиск элемента на странице")
     def find_element(self, by: str, value: str, *, timeout: int = 10) -> WebElement:
         WebDriverWait(self._driver, timeout).until(
             EC.visibility_of_element_located((by, value))
@@ -34,6 +35,7 @@ class BasePage:
 
         return self._driver.find_element(by, value)
 
+    @allure.step("Проверка существования элемента на странице")
     def element_exists(self, by: str, value: str, *, timeout: int = 10) -> bool:
         try:
             self.find_element(by, value, timeout=timeout)
@@ -42,11 +44,14 @@ class BasePage:
             return False
 
 
+"""
+    Базовый класс страницы кинопоиска с методами для поиска общих элементов всех страниц:
+    элементов шапки, футера и т.д.
+"""
+
+
 class BaseKinopoiskPage(BasePage):
-    """
-        Базовый класс страницы кинопоиска с методами для поиска общих элементов всех страниц:
-        элементов шапки, футера и т.д.
-    """
+
     url = "https://www.kinopoisk.ru/"
 
     @allure.step("Поиск кнопки `войти`")

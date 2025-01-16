@@ -28,7 +28,7 @@ class MovieApi:
         return self.get_movie_list(f"?rating.kp={rating}")
 
     @allure.step("Поиск фильма по жанру")
-    def get_movie_by_genre(self,genre: str) -> tuple[list, int]:
+    def get_movie_by_genre(self, genre: str) -> tuple[list, int]:
         return self.get_movie_list(f"?genres.name={genre}")
 
     @allure.step("Поиск фильма по коллекциям")
@@ -38,7 +38,6 @@ class MovieApi:
     @allure.step("Поиск фильма по ID")
     def get_movie_by_id(self, movie_id: int) -> tuple[dict, int]:
         request_str = f'{self.base_url}/{movie_id}'
-
         with allure.step(f"Делаем запрос к api кинопоиска: {request_str}"):
             resp = requests.get(request_str, headers=self.headers)
             return resp.json(), resp.status_code

@@ -2,6 +2,8 @@ import json
 import os
 from pathlib import Path
 
+"""Класс по работе с тестовыми данными"""
+
 
 class DataProvider(dict):
     def __init__(self) -> None:

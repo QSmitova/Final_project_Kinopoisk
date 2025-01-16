@@ -1,9 +1,9 @@
 import allure
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-
 from ui_pages import BaseKinopoiskPage
+
+""" Класс, описывающий страницу расширенного поиска """
 
 
 class ExtendedSearchPage(BaseKinopoiskPage):
