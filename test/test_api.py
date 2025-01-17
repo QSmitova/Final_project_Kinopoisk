@@ -44,7 +44,7 @@ def test_get_movie_by_rating(movie_api: MovieApi):
 def test_get_movie_by_genre(movie_api: MovieApi):
     movies, status_code = movie_api.get_movie_by_genre("драма")
     assert status_code == 200
-    assert 6975484 in [movie["id"] for movie in movies]
+    assert 6989805 in [movie["id"] for movie in movies]
 
 
 @pytest.mark.api_test
