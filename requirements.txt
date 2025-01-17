@@ -1,6 +1,0 @@
-pytest
-selenium
-webdriver-manager
-allure-pytest
-selenium-stealth
-fake-useragent
